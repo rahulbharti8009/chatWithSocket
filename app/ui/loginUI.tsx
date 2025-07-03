@@ -15,6 +15,8 @@ import { RootStackParamList } from "../utils/types";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { localSaveMobile } from "../utils/localDB";
 import { BASE_URL } from "../utils/constant";
+import DB from "../db/DBEntity";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
 type Props = {
@@ -43,6 +45,8 @@ export const LoginUI: React.FC<Props> = ({ navigation }) => {
     });
 
     try {
+        DB.mobile = mobile
+
       console.log("BASE_URL" , `${BASE_URL}api/chatLoginSignup`)
       const response = await fetch(`${BASE_URL}api/chatLoginSignup`, {
         method: "POST",
@@ -60,8 +64,9 @@ export const LoginUI: React.FC<Props> = ({ navigation }) => {
       
       const result = await response.json();
       console.log("✅ API Response:", result);
-      localSaveMobile(mobile, (mobile)=> {
+      localSaveMobile(mobile, async(mobile)=> {
         console.log("✅ callback:", mobile);
+        await AsyncStorage.setItem("mobile",mobile.toString())
         navigation.navigate('Home', {mobile});
       })
     } catch (error) {

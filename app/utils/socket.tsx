@@ -1,25 +1,43 @@
 import { io, Socket } from 'socket.io-client';
 import { BASE_URL } from './constant';
+import DB from '../db/DBEntity';
+class MySocket{
+  private static instance: MySocket;
+  private socket: Socket | null = null;
 
-// 👇 Define types for your server events (optional but recommended)
-interface ServerToClientEvents {
-  users: (data: any[]) => void; // adjust the type (e.g., User[]) if known
-}
-
-interface ClientToServerEvents {
-  getUsers: () => void;
-}
-
-// 👇 Typed socket instance
-const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io(
-  BASE_URL,
-  {
-    transports: ["websocket"],
-    autoConnect: false, // optional: control when to connect
-    query: {
-      userId : "8171800266", // 👈 this gets passed to the server in socket.handshake.query
-    },
+  constructor(){
+        console.log("Singleton instance created");
   }
-);
 
-export default socket;
+  public static getInstance(){
+    if(!MySocket.instance){
+      this.instance = new MySocket()
+    }
+    return this.instance
+  }
+
+  public createSocket(): Socket {
+    if (!DB.mobile) {
+      throw new Error("DB.mobile is not set yet!");
+    }
+
+    this.socket = io(BASE_URL, {
+      transports: ["websocket"],
+      autoConnect: false,
+      query: {
+        userId: DB.mobile,
+      },
+    });
+
+    return this.socket;
+  }
+
+  public getSocket(): Socket | null {
+    return this.socket;
+  }
+
+
+
+}
+
+export default MySocket;

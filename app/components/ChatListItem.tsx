@@ -14,7 +14,7 @@ export const ChatListItem: React.FC<{ user: ChatUser ,  onPress: () => void }> =
       <View style={styles.details}>
         <Text style={styles.name}>{user.name || 'No Name'}</Text>
         <Text style={styles.mobile}>{user.mobile}</Text>
-        <Text style={styles.time}>{user.online ?  "yyyy" :"test"} </Text>
+        <Text style={styles.time}>{user.online ?  "online" :"offline"} </Text>
 
       </View>
     </TouchableOpacity>

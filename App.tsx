@@ -14,7 +14,9 @@ function App() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+            <StatusBar />
+
+      {/* <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} /> */}
       <MyStack />
     </SafeAreaView>
   );
