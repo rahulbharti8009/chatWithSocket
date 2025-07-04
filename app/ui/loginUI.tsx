@@ -13,11 +13,11 @@ import {
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../utils/types";
 import Icon from "react-native-vector-icons/FontAwesome";
-import { localSaveMobile } from "../utils/localDB";
+import { checkInternetConnection, localSaveMobile } from "../utils/localDB";
 import { BASE_URL } from "../utils/constant";
 import DB from "../db/DBEntity";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
+import { NoInternetAlert } from "../common/no-internet";
 
 type Props = {
   navigation: NativeStackNavigationProp<RootStackParamList, "Login">;
@@ -30,6 +30,9 @@ export const LoginUI: React.FC<Props> = ({ navigation }) => {
   const [otp, setOtp] = useState("1234");
 
   const handleLogin = async () => {
+    const isConnected = await checkInternetConnection();
+    if (!isConnected) NoInternetAlert
+
     if (mobile.length < 10) {
       Alert.alert("Invalid Mobile", "Mobile number must be 10 digits");
       return;

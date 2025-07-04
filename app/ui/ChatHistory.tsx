@@ -76,12 +76,29 @@ const ChatHistoryUI = () => {
           <FlatList
             data={chat}
             keyExtractor={(_, index) => index.toString()}
-            renderItem={({ item }) => (
+            renderItem={({ item , index}) => (
+              <>
+{(index === 0 || item.date !== chat[index - 1]?.date) && (
+  <Text style={{
+    alignSelf: 'center',
+    marginVertical: 4,
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    backgroundColor: 'green',
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: 'gray',
+    color: 'white',
+    overflow: 'hidden',
+  }}>
+    {item.date}
+  </Text>
+)}
               <View
                 style={{
                   alignSelf:
                     item.clientFrom === DB.mobile ? 'flex-end' : 'flex-start',
-                  backgroundColor:
+                    backgroundColor:
                     item.clientFrom === DB.mobile ? '#d1d1d1' : '#add8e6',
                   marginVertical: 5,
                   padding: 10,
@@ -91,7 +108,8 @@ const ChatHistoryUI = () => {
                 <Text>{item.message}</Text>
                 <Text style={{ fontSize: 10, color: 'gray' }}>{item.time}</Text>
               </View>
-            )}
+            </>)
+          }
           />
           <TextInput
             placeholder="Type your message"
