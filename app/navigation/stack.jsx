@@ -5,6 +5,7 @@ import { LoginUI } from '../ui/loginUI';
 import { HomeUI } from '../ui/HomeUI';
 import { localGetMobile } from '../utils/localDB';
 import ChatHistoryUI  from '../ui/ChatHistory';
+import { ThemeProvider } from '../theme/ThemeContext';
 
 const Stack = createNativeStackNavigator();
 
@@ -24,6 +25,7 @@ export const MyStack = () => {
 
 
   return (
+     <ThemeProvider>
     <NavigationContainer>
       <Stack.Navigator initialRouteName={initialRoute}>
         <Stack.Screen
@@ -34,10 +36,11 @@ export const MyStack = () => {
         <Stack.Screen
           name="Home"
           component={HomeUI}
-          options={{ headerShown: true }}
+          options={{ headerShown: false }}
         />
-        <Stack.Screen name="ChatHistory" component={ChatHistoryUI} />
+        <Stack.Screen name="ChatHistory" component={ChatHistoryUI}  options={{ headerShown: false }}/>
       </Stack.Navigator>
     </NavigationContainer>
+    </ThemeProvider>
   );
 };

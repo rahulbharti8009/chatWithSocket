@@ -1,5 +1,5 @@
 import { Alert } from "react-native"
 
 export const NoInternetAlert=()=>{
-    return Alert.alert("No internet connection available.")
+    return Alert.alert("Opps","No internet connection available.")
 }

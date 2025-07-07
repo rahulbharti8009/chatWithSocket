@@ -8,12 +8,15 @@ import {
   Platform,
   Text,
   TextInput,
+  TouchableOpacity,
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
 import { RouteProp, useRoute } from '@react-navigation/native';
 import DB from '../db/DBEntity';
 import MySocket from '../utils/socket';
+import CustomHeader from '../components/CustomHeader';
+import { useTheme } from '../theme/ThemeContext';
 
 type ChatHistoryRouteProp = RouteProp<
   { ChatHistory: { user: ChatUser } },
@@ -27,6 +30,7 @@ const ChatHistoryUI = () => {
   const user = route.params.user;
   const [message, setMessage] = useState<string>('');
   const [chat, setChat] = useState<ChatMessage[]>([]);
+  const { theme, toggleTheme, themeColor } = useTheme();
 
   useEffect(() => {
     const socketParams = `message${DB.mobile}-${user.mobile}`;
@@ -66,69 +70,100 @@ const ChatHistoryUI = () => {
   };
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'} // adjust for platform
-      style={{ flex: 1 }}
-      keyboardVerticalOffset={80} // adjust if header overlaps
-    >
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View style={{ flex: 1, padding: 10 }}>
-          <FlatList
-            data={chat}
-            keyExtractor={(_, index) => index.toString()}
-            renderItem={({ item , index}) => (
-              <>
-{(index === 0 || item.date !== chat[index - 1]?.date) && (
-  <Text style={{
-    alignSelf: 'center',
-    marginVertical: 4,
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    backgroundColor: 'green',
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: 'gray',
-    color: 'white',
-    overflow: 'hidden',
-  }}>
-    {item.date}
-  </Text>
-)}
-              <View
+    <>
+      <CustomHeader
+        title={`${user.name == null ? user.mobile : user.mobile}`}
+      />
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'} // adjust for platform
+        style={{ flex: 1 }}
+        // keyboardVerticalOffset={100} // adjust if header overlaps
+      >
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <View style={{ flex: 1, padding: 10, backgroundColor: themeColor.background }}>
+            <FlatList
+              data={chat}
+              keyExtractor={(_, index) => index.toString()}
+              renderItem={({ item, index }) => (
+                <>
+                  {(index === 0 || item.date !== chat[index - 1]?.date) && (
+                    <Text
+                      style={{
+                        
+                        alignSelf: 'center',
+                        marginVertical: 4,
+                        paddingHorizontal: 10,
+                        paddingVertical: 4,
+                        backgroundColor: theme,
+                        borderRadius: 10,
+                        borderWidth: 1,
+                        borderColor: 'gray',
+                        color:  themeColor.text,
+                        overflow: 'hidden',
+                      }}
+                    >
+                      {item.date}
+                    </Text>
+                  )}
+                  <View
+                    style={{
+                      alignSelf:
+                        item.clientFrom === DB.mobile
+                          ? 'flex-end'
+                          : 'flex-start',
+                      backgroundColor:
+                        item.clientFrom === DB.mobile ? '#d1d1d1' : '#add8e6',
+                      marginStart: item.clientFrom === DB.mobile ? 40 : 5,
+                      marginEnd: item.clientFrom === DB.mobile ? 5 : 40,
+                      marginVertical: 5,
+                      padding: 10,
+                      borderRadius: 10,
+                    }}
+                  >
+                    <Text>{item.message}</Text>
+                    <Text style={{ fontSize: 10, color: 'gray' }}>
+                      {item.time}
+                    </Text>
+                  </View>
+                </>
+              )}
+            />
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                borderColor: 'gray',
+                borderWidth: 1,
+                borderRadius: 10,
+                paddingHorizontal: 10,
+                marginVertical: 10,
+              }}
+            >
+              <TextInput
+                placeholder="Type your message"
+                value={message}
+                onChangeText={setMessage}
+                onSubmitEditing={sendMessage}
+                multiline
                 style={{
-                  alignSelf:
-                    item.clientFrom === DB.mobile ? 'flex-end' : 'flex-start',
-                    backgroundColor:
-                    item.clientFrom === DB.mobile ? '#d1d1d1' : '#add8e6',
-                  marginVertical: 5,
-                  padding: 10,
-                  borderRadius: 10,
+                  color:  themeColor.text,
+                  flex: 1,
+                  paddingVertical: 8,
+                  paddingRight: 10, // give space for the send icon
                 }}
-              >
-                <Text>{item.message}</Text>
-                <Text style={{ fontSize: 10, color: 'gray' }}>{item.time}</Text>
-              </View>
-            </>)
-          }
-          />
-          <TextInput
-            placeholder="Type your message"
-            value={message}
-            onChangeText={setMessage}
-            onSubmitEditing={sendMessage}
-            style={{
-              borderColor: 'gray',
-              borderWidth: 1,
-              borderRadius: 10,
-              paddingHorizontal: 15,
-              paddingVertical: 8,
-              marginVertical: 10,
-            }}
-          />
-          <Button title="Send" onPress={sendMessage} />
-        </View>
-      </TouchableWithoutFeedback>
-    </KeyboardAvoidingView>
+              />
+              <TouchableOpacity onPress={sendMessage}>
+                <Text
+                  style={{ color: '#007AFF', fontWeight: '600', padding: 8 }}
+                >
+                  Send
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
+    </>
   );
 };
 

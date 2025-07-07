@@ -1,20 +1,35 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, useColorScheme } from 'react-native';
 import { ChatUser } from '../utils/types';
 
 export const ChatListItem: React.FC<{ user: ChatUser ,  onPress: () => void }> = ({ user, onPress }) => {
+    const scheme = useColorScheme(); // "light" or "dark"
+  
+    const theme = {
+      background: scheme === 'dark' ? '#121212' : '#FFFFFF',
+      text: scheme === 'dark' ? '#FFFFFF' : '#000000',
+      inputBackground: scheme === 'dark' ? '#1e1e1e' : '#ffffff',
+      inputBorder: scheme === 'dark' ? '#444' : '#ccc',
+      googleButtonBorder: scheme === 'dark' ? '#555' : '#ccc',
+      googleButtonText: scheme === 'dark' ? '#eee' : '#444',
+    };
+
   return (
-    <TouchableOpacity style={styles.container} onPress={onPress}  activeOpacity={0.7}>
+    <TouchableOpacity style={[styles.container, {backgroundColor: theme.background}]} onPress={onPress}  activeOpacity={0.7}>
+    
+      {user?.image ? <View style={{width: 50, height:50, backgroundColor: '#000000', borderRadius: 50}}></View> : 
       <Image
         source={{
-          uri: user.image || 'https://via.placeholder.com/60',
+          uri: user.image || 'https://fastly.picsum.photos/id/156/200/300.jpg?grayscale&hmac=wCa3cCa9XdO0BhZ6dri847io1fdHtTcU3EKEaxmlDTo',
         }}
         style={styles.avatar}
       />
+      }
+      
       <View style={styles.details}>
-        <Text style={styles.name}>{user.name || 'No Name'}</Text>
-        <Text style={styles.mobile}>{user.mobile}</Text>
-        <Text style={styles.time}>{user.online ?  "online" :"offline"} </Text>
+        <Text style={[styles.name, {color: theme.text}]}>{user.name || 'No Name'}</Text>
+        <Text style={[styles.mobile, {color: theme.text}]}>{user.mobile}</Text>
+        <Text style={[styles.time, {color: theme.text}]}>{user.online ?  "online" :"offline"} </Text>
 
       </View>
     </TouchableOpacity>
@@ -31,7 +46,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 12,
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#fff',
   },
   avatar: {
     width: 60,
@@ -41,6 +55,7 @@ const styles = StyleSheet.create({
   },
   details: {
     flex: 1,
+    marginStart: 10
   },
   name: {
     fontWeight: 'bold',
