@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, useColorScheme } from 'react-native';
 import { ChatUser } from '../utils/types';
+import DB from '../db/DBEntity';
 
 export const ChatListItem: React.FC<{ user: ChatUser ,  onPress: () => void }> = ({ user, onPress }) => {
     const scheme = useColorScheme(); // "light" or "dark"
@@ -28,8 +29,8 @@ export const ChatListItem: React.FC<{ user: ChatUser ,  onPress: () => void }> =
       
       <View style={styles.details}>
         <Text style={[styles.name, {color: theme.text}]}>{user.name || 'No Name'}</Text>
-        <Text style={[styles.mobile, {color: theme.text}]}>{user.mobile}</Text>
-        <Text style={[styles.time, {color: theme.text}]}>{user.online ?  "online" :"offline"} </Text>
+        <Text style={[styles.mobile, {color: theme.text}]}>{user.mobile == DB.mobile ? "Self" : user.mobile}</Text>
+        <Text style={[styles.time, {color: theme.text}]}>{user.online ?  "online" :""} </Text>
 
       </View>
     </TouchableOpacity>

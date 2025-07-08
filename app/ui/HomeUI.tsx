@@ -82,6 +82,8 @@ export const HomeUI: React.FC<Props> = ({ navigation }) => {
       )}
 
       {!isLoading && users.length > 0 && (
+      <>
+  
         <FlatList
           style={{ backgroundColor: themeColor.background }}
           data={users}
@@ -93,6 +95,37 @@ export const HomeUI: React.FC<Props> = ({ navigation }) => {
             />
           )}
         />
+           <View
+            style={{
+              bottom:10,
+              position:'absolute',
+              width: 300,
+              height: 50,
+              backgroundColor: '#000',
+              borderRadius: 50,
+              alignSelf: 'center',
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'space-evenly',
+              paddingHorizontal: 10,
+            }}
+          >
+            {/* Chat 1 */}
+            <Text style={{ color: '#fff' }}>Chat</Text>
+
+            {/* Divider */}
+            <View style={{ width: 1, height: '60%', backgroundColor: '#fff' }} />
+
+            {/* Chat 2 */}
+            <Text style={{ color: '#fff' }}>Group</Text>
+
+            {/* Divider */}
+            <View style={{ width: 1, height: '60%', backgroundColor: '#fff' }} />
+
+            {/* Group */}
+            <Text style={{ color: '#fff' }}>Group +</Text>
+          </View>
+      </>
       )}
       
     </>
