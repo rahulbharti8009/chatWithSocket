@@ -42,6 +42,8 @@ export const HomeUI: React.FC<Props> = ({ navigation }) => {
 
         if (!socket.connected) socket.connect();
         socket.emit('getUsers');
+        socket.emit('group', mobile);
+
         const handleUsers = (data: ChatUser[]) => {
           console.log('Received users list:', data);
           setUsers(data);
