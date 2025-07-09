@@ -1,6 +1,7 @@
 import { io, Socket } from 'socket.io-client';
 import { BASE_URL } from './constant';
 import DB from '../db/DBEntity';
+
 class MySocket {
   private static instance: MySocket;
   private socket: Socket | null = null;
