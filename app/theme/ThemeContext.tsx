@@ -33,6 +33,7 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({
       inputBorder: theme === 'dark' ? '#444' : '#ccc',
       googleButtonBorder: theme === 'dark' ? '#555' : '#ccc',
       googleButtonText: theme === 'dark' ? '#eee' : '#444',
+      // googleButtonText: theme === 'dark' ? '#eee' : '#444',
     };
   };
   const [themeColor, setThemeColor] = useState(getThemeColor());
