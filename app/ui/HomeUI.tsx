@@ -101,7 +101,7 @@ export const HomeUI: React.FC<Props> = ({ navigation }) => {
       {!isLoading && users.length > 0 && (
         <>
           <Animated.FlatList
-            style={{ backgroundColor: themeColor.chatBG }}
+            style={{ backgroundColor: themeColor.chatBG, paddingTop: headerHeight-10 }}
             data={users}
             onScroll={Animated.event(
               [{ nativeEvent: { contentOffset: { y: scrollY } } }],
@@ -157,7 +157,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
-    position: 'absolute',
+    // position: 'absolute',
     top: 0,
     left: 0,
     right: 0,
