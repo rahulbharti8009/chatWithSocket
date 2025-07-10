@@ -6,6 +6,7 @@ import { HomeUI } from '../ui/HomeUI';
 import { localGetMobile } from '../utils/localDB';
 import ChatHistoryUI  from '../ui/ChatHistory';
 import { ThemeProvider } from '../theme/ThemeContext';
+import AddGroupUI from '../ui/AddGroupUI';
 
 const Stack = createNativeStackNavigator();
 
@@ -39,6 +40,8 @@ export const MyStack = () => {
           options={{ headerShown: false }}
         />
         <Stack.Screen name="ChatHistory" component={ChatHistoryUI}  options={{ headerShown: false }}/>
+        <Stack.Screen name="AddGroupUI" component={AddGroupUI}  options={{ headerShown: false }}/>
+
       </Stack.Navigator>
     </NavigationContainer>
     </ThemeProvider>

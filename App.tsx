@@ -14,10 +14,11 @@ import {
   View,
 } from 'react-native';
 import { MyStack } from './app/navigation/stack';
-import { ThemeProvider } from './app/theme/ThemeContext';
+import { ThemeProvider, useTheme } from './app/theme/ThemeContext';
 
 function App() {
   const isDarkMode = useColorScheme() === 'dark';
+  // const { theme, toggleTheme, themeColor } = useTheme();
 
   return (
     <SafeAreaView style={[styles.container,{

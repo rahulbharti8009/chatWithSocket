@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { ChatMessage, ChatUser } from '../utils/types';
 import {
+  Alert,
   Button,
   FlatList,
   Keyboard,
@@ -33,7 +34,7 @@ const ChatHistoryUI = () => {
   const { theme, toggleTheme, themeColor } = useTheme();
 
   useEffect(() => {
-    const socketParams = `message${DB.mobile}-${user.mobile}`;
+    const socketParams = `message${ user.mobile ==  undefined ? `${user?.name.toString()}-${user?.name.toString()}`: `${DB.mobile}-${user.mobile.toString()}`}`;
 
     socket?.on(socketParams, (msg: ChatMessage) => {
       console.log('useEffect socket ', msg);
@@ -56,11 +57,12 @@ const ChatHistoryUI = () => {
     const ampm = hours >= 12 ? 'PM' : 'AM';
     hours = hours % 12 || 12;
     const time = `${hours}:${minutes} ${ampm}`;
-
+// Alert.alert(`${user.mobile}`,`${JSON.stringify(user)}`)
     const body: ChatMessage = {
       message: message.trim(),
-      clientFrom: DB.mobile.toString(),
-      clientTo: user.mobile.toString(),
+      from: DB.mobile.toString(),
+      clientFrom: user.mobile ==  undefined ? `${user?.name.toString()}`: DB.mobile.toString(),
+      clientTo: user.mobile ==  undefined ? `${user?.name.toString()}`: user.mobile.toString(),
       date: date,
       time: time,
     };
@@ -72,12 +74,12 @@ const ChatHistoryUI = () => {
   return (
     <>
       <CustomHeader
-        title={`${user.name == null ? user.mobile : user.mobile}`}
+        title={`${user.name == null ? user.name : user.name}`}
       />
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'} // adjust for platform
         style={{ flex: 1 }}
-        // keyboardVerticalOffset={100} // adjust if header overlaps
+        keyboardVerticalOffset={100} // adjust if header overlaps
       >
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View style={{ flex: 1, padding: 10, backgroundColor: themeColor.background }}>
@@ -108,13 +110,13 @@ const ChatHistoryUI = () => {
                   <View
                     style={{
                       alignSelf:
-                        item.clientFrom === DB.mobile
+                        item.from === DB.mobile
                           ? 'flex-end'
                           : 'flex-start',
                       backgroundColor:
-                        item.clientFrom === DB.mobile ? '#d1d1d1' : '#add8e6',
-                      marginStart: item.clientFrom === DB.mobile ? 40 : 5,
-                      marginEnd: item.clientFrom === DB.mobile ? 5 : 40,
+                        item.from === DB.mobile ? '#d1d1d1' : '#add8e6',
+                      marginStart: item.from === DB.mobile ? 40 : 5,
+                      marginEnd: item.from === DB.mobile ? 5 : 40,
                       marginVertical: 5,
                       padding: 10,
                       borderRadius: 10,

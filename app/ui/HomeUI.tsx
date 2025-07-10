@@ -2,9 +2,11 @@ import { RouteProp, useNavigation } from '@react-navigation/native';
 import React, { useEffect, useRef, useState } from 'react';
 import {
   ActivityIndicator,
+  Alert,
   FlatList,
   StatusBar,
   Text, Animated,
+  TouchableOpacity,
   useColorScheme,
   View,
   StyleSheet,
@@ -18,6 +20,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import DB from '../db/DBEntity';
 import CustomHeader from '../components/CustomHeader';
 import { useTheme } from '../theme/ThemeContext';
+import { GroupChatListItem } from '../components/GroupChatListItem';
 
 
 type Props = {
@@ -26,10 +29,12 @@ type Props = {
 export const HomeUI: React.FC<Props> = ({ navigation }) => {
   const scrollY = useRef(new Animated.Value(0)).current;
   // const {mobile} = route.params
-  const [mobile, setMobile] = useState<String | null>(null);
-
   const [users, setUsers] = useState<ChatUser[]>([]);
+  const [group, setGroup] = useState<ChatUser[]>([]);
+
   const [isLoading, setlaoding] = useState(true);
+  const [chatType, setChatType] = useState('chat');
+
   const { theme, toggleTheme, themeColor } = useTheme();
 
   const headerHeight = 60; // Customize as needed
@@ -57,14 +62,29 @@ export const HomeUI: React.FC<Props> = ({ navigation }) => {
 
           console.log('Received users list: 1');
 
+        socket.emit('group', mobile);
+        socket.on(`getGroupApi${mobile}`, (mobile)=> {
+          // Alert.alert('group====== '+mobile);
+                  socket.emit('group', mobile);
+        })
+// ========== chat ===========
         const handleUsers = (data: ChatUser[]) => {
           console.log('Received users list:', data);
           setUsers(data);
           setlaoding(false);
         };
         socket.on(socketParams, handleUsers);
+//======= group chat =======
+        const handleGroup = (data: ChatUser[]) => {
+          console.log('Received group list:', data);
+          setGroup(data);
+          setlaoding(false);
+        };
+        socket.on(`group${mobile}`, handleGroup);
         return () => {
           socket.off(socketParams, handleUsers);
+          socket.off("group${mobile}", handleGroup);
+
           // socket.removeAllListeners();
           socket.disconnect(); // 👈 disconnect cleanly
         };
@@ -74,6 +94,42 @@ export const HomeUI: React.FC<Props> = ({ navigation }) => {
     };
     saveMobile();
   }, []);
+
+  const ChatTypeComp=()=> {
+    switch(chatType){
+      case "chat": return <>
+       <Animated.FlatList
+            style={{ backgroundColor: themeColor.chatBG, paddingTop: headerHeight-10 }}
+            data={users}
+            onScroll={Animated.event(
+              [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+              { useNativeDriver: true }
+            )}
+            keyExtractor={item => item._id}
+            renderItem={({ item }) => (
+              <ChatListItem
+                user={item}
+                onPress={() => navigation.navigate('ChatHistory', { user: item })}
+              />
+            )}
+          />
+      </>
+      case "group": return <>
+       <Animated.FlatList
+          style={{ backgroundColor: themeColor.background }}
+          data={group}
+          keyExtractor={item => item._id}
+          renderItem={({ item }) => (
+            <GroupChatListItem
+              user={item}
+              onPress={() => navigation.navigate('ChatHistory', { user: item })}
+            />
+          )}
+        />
+      </>
+      case "group": return <>{}</>
+    }
+  }
 
   return (
     <>
@@ -99,29 +155,16 @@ export const HomeUI: React.FC<Props> = ({ navigation }) => {
       )}
 
       {!isLoading && users.length > 0 && (
-        <>
-          <Animated.FlatList
-            style={{ backgroundColor: themeColor.chatBG, paddingTop: headerHeight-10 }}
-            data={users}
-            onScroll={Animated.event(
-              [{ nativeEvent: { contentOffset: { y: scrollY } } }],
-              { useNativeDriver: true }
-            )}
-            keyExtractor={item => item._id}
-            renderItem={({ item }) => (
-              <ChatListItem
-                user={item}
-                onPress={() => navigation.navigate('ChatHistory', { user: item })}
-              />
-            )}
-          />
-          <View
+      <>
+    <ChatTypeComp/>
+       
+           <View
             style={{
               bottom: 10,
               position: 'absolute',
               width: 300,
               height: 50,
-              backgroundColor: '#000',
+              backgroundColor: themeColor.navbar,
               borderRadius: 50,
               alignSelf: 'center',
               flexDirection: 'row',
@@ -131,19 +174,27 @@ export const HomeUI: React.FC<Props> = ({ navigation }) => {
             }}
           >
             {/* Chat 1 */}
-            <Text style={{ color: '#fff' }}>Chat</Text>
+            <TouchableOpacity onPress={() => setChatType(()=> 'chat')}>
+            <Text style={{ color: themeColor.navbarTextColor }}>Chat</Text>
+            </TouchableOpacity>
 
             {/* Divider */}
-            <View style={{ width: 1, height: '60%', backgroundColor: '#fff' }} />
+            <View style={{ width: 1, height: '60%', backgroundColor: themeColor.navbarTextColor }} />
 
             {/* Chat 2 */}
-            <Text style={{ color: '#fff' }}>Group</Text>
+            <TouchableOpacity onPress={() => setChatType(()=> 'group')}>
+            <Text style={{ color: themeColor.navbarTextColor }}>Group</Text>
+            </TouchableOpacity>
 
             {/* Divider */}
-            <View style={{ width: 1, height: '60%', backgroundColor: '#fff' }} />
+            <View style={{ width: 1, height: '60%', backgroundColor: themeColor.navbarTextColor }} />
 
             {/* Group */}
-            <Text style={{ color: '#fff' }}>Group +</Text>
+            <TouchableOpacity onPress={() => {
+              navigation.navigate('AddGroupUI', { users : users})
+            }}>
+            <Text style={{ color: themeColor.navbarTextColor }}>Group +</Text>
+            </TouchableOpacity>
           </View>
         </>
       )}

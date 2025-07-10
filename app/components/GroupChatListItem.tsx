@@ -2,16 +2,21 @@ import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, useColorScheme } from 'react-native';
 import { ChatUser } from '../utils/types';
 import DB from '../db/DBEntity';
-import { useTheme } from '../theme/ThemeContext';
 
-export const ChatListItem: React.FC<{ user: ChatUser ,  onPress: () => void }> = ({ user, onPress }) => {
+export const GroupChatListItem: React.FC<{ user: ChatUser ,  onPress: () => void }> = ({ user, onPress }) => {
     const scheme = useColorScheme(); // "light" or "dark"
-  const { theme, toggleTheme, themeColor } = useTheme();
-   
+  
+    const theme = {
+      background: scheme === 'dark' ? '#121212' : '#FFFFFF',
+      text: scheme === 'dark' ? '#FFFFFF' : '#000000',
+      inputBackground: scheme === 'dark' ? '#1e1e1e' : '#ffffff',
+      inputBorder: scheme === 'dark' ? '#444' : '#ccc',
+      googleButtonBorder: scheme === 'dark' ? '#555' : '#ccc',
+      googleButtonText: scheme === 'dark' ? '#eee' : '#444',
+    };
 
   return (
-    <TouchableOpacity style={[styles.container,{
-    backgroundColor: themeColor.chat,}]} onPress={onPress}  activeOpacity={0.7}>
+    <TouchableOpacity style={[styles.container, {backgroundColor: theme.background}]} onPress={onPress}  activeOpacity={0.7}>
     
       {user?.image ? <View style={{width: 50, height:50, backgroundColor: '#000000', borderRadius: 50}}></View> : 
       <Image
@@ -23,9 +28,9 @@ export const ChatListItem: React.FC<{ user: ChatUser ,  onPress: () => void }> =
       }
       
       <View style={styles.details}>
-        <Text style={[styles.name, {color: themeColor.text}]}>{user.name || 'No Name'}</Text>
-        <Text style={[styles.mobile, {color: themeColor.text}]}>{user.mobile == DB.mobile ? "Self" : user.mobile}</Text>
-        <Text style={[styles.time, {color: themeColor.text}]}>{user.online ?  "online" :""} </Text>
+        <Text style={[styles.name, {color: theme.text}]}>{user.name || 'No Name'}</Text>
+        <Text style={[styles.mobile, {color: theme.text}]}>{user.mobile == DB.mobile ? "Self" : user.mobile}</Text>
+        <Text style={[styles.time, {color: theme.text}]}>{user.online ?  "online" :""} </Text>
 
       </View>
     </TouchableOpacity>
@@ -34,9 +39,9 @@ export const ChatListItem: React.FC<{ user: ChatUser ,  onPress: () => void }> =
 
 const styles = StyleSheet.create({
   container: {
-    // borderColor: '#ccc',
-    // borderWidth: 1,
-    borderRadius: 50,
+    borderColor: '#ccc',
+    borderWidth: 1,
+    borderRadius: 10,
     padding: 10,
     marginVertical: 6,
     marginHorizontal: 12,

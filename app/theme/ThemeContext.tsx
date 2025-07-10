@@ -16,6 +16,12 @@ interface ThemeContextProps {
     toolbarColor: string,
     chatBG:string,
     headerText:string,
+    navbar: string;
+    navbarTextColor: string;
+    button_bg_color : string;
+    button_text_color : string;
+    selectItem: string;
+    chat: string;
   };
 }
 
@@ -40,9 +46,16 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({
       googleButtonBorder: theme === 'dark' ? '#555' : '#ccc',
       googleButtonText: theme === 'dark' ? '#eee' : '#444',
       // googleButtonText: theme === 'dark' ? '#eee' : '#444',
+      navbar: theme === 'dark' ? '#eee' : '#000',
+      navbarTextColor: theme === 'dark' ? '#000000' : '#ffffff',
+      button_bg_color: theme === 'dark' ? '#00695C' : '#00695C',
+      button_text_color: theme === 'dark' ? '#ffffff' : '#ffffff',
+      selectItem: theme === 'dark' ? '#00695C' : '#00695C',
+      chat:theme === 'dark' ? '#c2c2c2' : '#fff',
+
     };
   };
-  const [themeColor, setThemeColor] = useState(getThemeColor());
+  const [themeColor, setThemeColor] = useState<any>(getThemeColor());
   const toggleTheme = () => {
     setTheme(prev => (prev === 'light' ? 'dark' : 'light'));
   };
