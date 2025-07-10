@@ -20,6 +20,7 @@ import { NoInternetAlert } from '../common/no-internet';
 import DB from '../db/DBEntity';
 import { BASE_URL } from '../utils/constant';
 import axios from 'axios';
+import MySocket from '../utils/socket';
 
 type AddGroupUIRouteProp = RouteProp<RootStackParamList, 'AddGroupUI'>;
 const tag = "AddGroupUI";
@@ -53,30 +54,31 @@ const AddGroupUI = () => {
     }
     const updatedGroupData = [...groupData, { mobile: DB.mobile }];
 
-    let data = JSON.stringify({
+    let data = {
       "name": groupName,
       "admin": DB.mobile,
       "group_user": updatedGroupData
-    });
-    
-    let config = {
-      method: 'post',
-      maxBodyLength: Infinity,
-      url: `${BASE_URL}api/addchatgroups`,
-      headers: { 
-        'Content-Type': 'application/json'
-      },
-      data : data
     };
+    const socket = MySocket.getInstance().getSocket()
+    socket?.emit("addgroup", data)
+    // let config = {
+    //   method: 'post',
+    //   maxBodyLength: Infinity,
+    //   url: `${BASE_URL}api/addchatgroups`,
+    //   headers: { 
+    //     'Content-Type': 'application/json'
+    //   },
+    //   data : data
+    // };
     
-    axios.request(config)
-    .then((response) => {
-      Alert.alert(JSON.stringify(response.data));
+    // axios.request(config)
+    // .then((response) => {
+    //   Alert.alert(JSON.stringify(response.data));
       
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+    // })
+    // .catch((error) => {
+    //   console.log(error);
+    // });
   };
 
   const handleCreateGroup = async() => {
