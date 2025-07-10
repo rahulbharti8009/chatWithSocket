@@ -14,7 +14,7 @@ const CustomHeader = ({ title }: {title: string}) => {
   return (
     <View
       style={{
-        height: 56,
+        height: 50,
         flexDirection: 'row',
         alignItems: 'center',
         paddingHorizontal: 16,

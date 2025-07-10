@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Image, TouchableOpacity, useColorScheme } from 
 import { ChatUser } from '../utils/types';
 import DB from '../db/DBEntity';
 
-export const ChatListItem: React.FC<{ user: ChatUser ,  onPress: () => void }> = ({ user, onPress }) => {
+export const GroupChatListItem: React.FC<{ user: ChatUser ,  onPress: () => void }> = ({ user, onPress }) => {
     const scheme = useColorScheme(); // "light" or "dark"
   
     const theme = {
