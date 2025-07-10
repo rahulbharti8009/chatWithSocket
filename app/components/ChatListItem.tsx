@@ -8,15 +8,17 @@ export const ChatListItem: React.FC<{ user: ChatUser ,  onPress: () => void }> =
   
     const theme = {
       background: scheme === 'dark' ? '#121212' : '#FFFFFF',
-      text: scheme === 'dark' ? '#FFFFFF' : '#000000',
+      text: scheme === 'dark' ? '#000' : '#000',
       inputBackground: scheme === 'dark' ? '#1e1e1e' : '#ffffff',
       inputBorder: scheme === 'dark' ? '#444' : '#ccc',
+      chat:scheme === 'dark' ? '#757575' : '#fff',
       googleButtonBorder: scheme === 'dark' ? '#555' : '#ccc',
       googleButtonText: scheme === 'dark' ? '#eee' : '#444',
     };
 
   return (
-    <TouchableOpacity style={[styles.container, {backgroundColor: theme.background}]} onPress={onPress}  activeOpacity={0.7}>
+    <TouchableOpacity style={[styles.container,{
+    backgroundColor: theme.chat,}]} onPress={onPress}  activeOpacity={0.7}>
     
       {user?.image ? <View style={{width: 50, height:50, backgroundColor: '#000000', borderRadius: 50}}></View> : 
       <Image
@@ -39,9 +41,9 @@ export const ChatListItem: React.FC<{ user: ChatUser ,  onPress: () => void }> =
 
 const styles = StyleSheet.create({
   container: {
-    borderColor: '#ccc',
-    borderWidth: 1,
-    borderRadius: 10,
+    // borderColor: '#ccc',
+    // borderWidth: 1,
+    borderRadius: 50,
     padding: 10,
     marginVertical: 6,
     marginHorizontal: 12,

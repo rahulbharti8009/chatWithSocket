@@ -13,6 +13,9 @@ interface ThemeContextProps {
     inputBorder: string;
     googleButtonBorder: string;
     googleButtonText: string;
+    toolbarColor: string,
+    chatBG:string,
+    headerText:string,
   };
 }
 
@@ -27,8 +30,11 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({
 
   const getThemeColor = () => {
     return {
-      background: theme === 'dark' ? '#121212' : '#FFFFFF',
-      text: theme === 'dark' ? '#FFFFFF' : '#000000',
+      background: theme === 'dark' ? '#000' : '#fff',
+      chatBG: theme === 'dark' ? '#2b2b2b' : '#dcddde',
+      toolbarColor: theme === 'dark' ? '##F6E1EB' : '#1e90ff',
+      text: theme === 'dark' ? '#fff' : '#000',
+      headerText: theme === 'dark' ? '#fff' : '#000',
       inputBackground: theme === 'dark' ? '#1e1e1e' : '#ffffff',
       inputBorder: theme === 'dark' ? '#444' : '#ccc',
       googleButtonBorder: theme === 'dark' ? '#555' : '#ccc',

@@ -1,12 +1,13 @@
 import { RouteProp, useNavigation } from '@react-navigation/native';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   ActivityIndicator,
   FlatList,
   StatusBar,
-  Text,
+  Text, Animated,
   useColorScheme,
   View,
+  StyleSheet,
 } from 'react-native';
 import { ChatUser, RootStackParamList } from '../utils/types';
 import { ChatListItem } from '../components/ChatListItem';
@@ -18,16 +19,26 @@ import DB from '../db/DBEntity';
 import CustomHeader from '../components/CustomHeader';
 import { useTheme } from '../theme/ThemeContext';
 
+
 type Props = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'Home'>;
 };
 export const HomeUI: React.FC<Props> = ({ navigation }) => {
+  const scrollY = useRef(new Animated.Value(0)).current;
   // const {mobile} = route.params
   const [mobile, setMobile] = useState<String | null>(null);
 
   const [users, setUsers] = useState<ChatUser[]>([]);
   const [isLoading, setlaoding] = useState(true);
   const { theme, toggleTheme, themeColor } = useTheme();
+
+  const headerHeight = 60; // Customize as needed
+
+  const headerTranslate = scrollY.interpolate({
+    inputRange: [0, headerHeight],
+    outputRange: [0, -headerHeight],
+    extrapolate: 'clamp',
+  });
 
 
   useEffect(() => {
@@ -42,7 +53,9 @@ export const HomeUI: React.FC<Props> = ({ navigation }) => {
 
         if (!socket.connected) socket.connect();
         socket.emit('getUsers');
-        socket.emit('group', mobile);
+        // socket.emit('group', mobile);
+
+          console.log('Received users list: 1');
 
         const handleUsers = (data: ChatUser[]) => {
           console.log('Received users list:', data);
@@ -64,8 +77,10 @@ export const HomeUI: React.FC<Props> = ({ navigation }) => {
 
   return (
     <>
-        <CustomHeader title='Home'/>
+      <Animated.View style={[styles.header, {backgroundColor: themeColor.background, transform: [{ translateY: headerTranslate }] }]}>
 
+        <CustomHeader title='Home' />
+      </Animated.View>
       {isLoading && users.length == 0 && (
         <>
           <View
@@ -78,29 +93,32 @@ export const HomeUI: React.FC<Props> = ({ navigation }) => {
               alignItems: 'center', // horizontally center
             }}
           >
-            <ActivityIndicator style={{}} size="small" color="#F8F8F8FF" />
+            <ActivityIndicator style={{}} size="large" color="#F8F8F8FF" />
           </View>
         </>
       )}
 
       {!isLoading && users.length > 0 && (
-      <>
-  
-        <FlatList
-          style={{ backgroundColor: themeColor.background }}
-          data={users}
-          keyExtractor={item => item._id}
-          renderItem={({ item }) => (
-            <ChatListItem
-              user={item}
-              onPress={() => navigation.navigate('ChatHistory', { user: item })}
-            />
-          )}
+        <>
+          <Animated.FlatList
+            style={{ backgroundColor: themeColor.chatBG }}
+            data={users}
+            onScroll={Animated.event(
+              [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+              { useNativeDriver: true }
+            )}
+            keyExtractor={item => item._id}
+            renderItem={({ item }) => (
+              <ChatListItem
+                user={item}
+                onPress={() => navigation.navigate('ChatHistory', { user: item })}
+              />
+            )}
           />
           <View
             style={{
-              bottom:10,
-              position:'absolute',
+              bottom: 10,
+              position: 'absolute',
               width: 300,
               height: 50,
               backgroundColor: '#000',
@@ -127,9 +145,37 @@ export const HomeUI: React.FC<Props> = ({ navigation }) => {
             {/* Group */}
             <Text style={{ color: '#fff' }}>Group +</Text>
           </View>
-      </>
+        </>
       )}
-      
+
     </>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  header: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: 60,
+    elevation: 15,
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 1000,
+  },
+  headerText: {
+    color: 'white',
+    fontSize: 18,
+  },
+  item: {
+    height: 60,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderBottomColor: '#ccc',
+    borderBottomWidth: 1,
+  },
+});

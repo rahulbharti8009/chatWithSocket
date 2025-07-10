@@ -25,8 +25,8 @@ function App() {
     }] }>
       <StatusBar
         hidden={false}
-        barStyle="light-content" // or "dark-content"
-        backgroundColor="#DD9C0FFF" // Android only
+        barStyle="dark-content" // or "dark-content" - "light-content"
+        backgroundColor={isDarkMode?"#424141":"#fff"} // Android only
         translucent={true} // false = draws below status bar
       />
       <MyStack />

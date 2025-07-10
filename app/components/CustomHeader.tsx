@@ -14,7 +14,8 @@ const CustomHeader = ({ title }: {title: string}) => {
   return (
     <View
       style={{
-        height: 56,
+        height: '100%',
+        width: '100%',
         flexDirection: 'row',
         alignItems: 'center',
         paddingHorizontal: 16,
@@ -28,7 +29,7 @@ const CustomHeader = ({ title }: {title: string}) => {
       </TouchableOpacity>
       <Text
         style={{
-          color: themeColor.text,
+          color: themeColor.headerText,
           fontSize: 18,
           fontWeight: 'bold',
           marginLeft: 16,
