@@ -4,6 +4,7 @@ export type RootStackParamList = {
     Home: {mobile: String};
     ChatHistory : {user: ChatUser};
     AddGroupUI : {users: ChatUser[]};
+    VideoCall: {}
   };
 
   export type ChatUser = {

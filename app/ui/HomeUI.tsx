@@ -34,7 +34,6 @@ export const HomeUI: React.FC<Props> = ({ navigation }) => {
 
   const { theme, toggleTheme, themeColor } = useTheme();
 
-
   useEffect(() => {
     const saveMobile = async () => {
       try {
@@ -48,18 +47,17 @@ export const HomeUI: React.FC<Props> = ({ navigation }) => {
         if (!socket.connected) socket.connect();
         socket.emit('getUsers');
         socket.emit('group', mobile);
-        socket.on(`getGroupApi${mobile}`, (mobile)=> {
-          // Alert.alert('group====== '+mobile);
-                  socket.emit('group', mobile);
-        })
-// ========== chat ===========
+        socket.on(`getGroupApi${mobile}`, mobile => {
+          socket.emit('group', mobile);
+        });
+        // ========== chat ===========
         const handleUsers = (data: ChatUser[]) => {
           console.log('Received users list:', data);
           setUsers(data);
           setlaoding(false);
         };
         socket.on(socketParams, handleUsers);
-//======= group chat =======
+        //======= group chat =======
         const handleGroup = (data: ChatUser[]) => {
           console.log('Received group list:', data);
           setGroup(data);
@@ -68,7 +66,7 @@ export const HomeUI: React.FC<Props> = ({ navigation }) => {
         socket.on(`group${mobile}`, handleGroup);
         return () => {
           socket.off(socketParams, handleUsers);
-          socket.off("group${mobile}", handleGroup);
+          socket.off('group${mobile}', handleGroup);
 
           // socket.removeAllListeners();
           socket.disconnect(); // 👈 disconnect cleanly
@@ -80,41 +78,52 @@ export const HomeUI: React.FC<Props> = ({ navigation }) => {
     saveMobile();
   }, []);
 
-  const ChatTypeComp=()=> {
-    switch(chatType){
-      case "chat": return <>
-       <FlatList
-          style={{ backgroundColor: themeColor.background }}
-          data={users}
-          keyExtractor={item => item._id}
-          renderItem={({ item }) => (
-            <ChatListItem
-              user={item}
-              onPress={() => navigation.navigate('ChatHistory', { user: item })}
+  const ChatTypeComp = () => {
+    switch (chatType) {
+      case 'chat':
+        return (
+          <>
+            <FlatList
+              style={{ backgroundColor: themeColor.background }}
+              data={users}
+              keyExtractor={item => item._id}
+              renderItem={({ item }) => (
+                <ChatListItem
+                  user={item}
+                  onPress={() =>
+                    navigation.navigate('ChatHistory', { user: item })
+                  }
+                />
+              )}
             />
-          )}
-        />
-      </>
-      case "group": return <>
-       <FlatList
-          style={{ backgroundColor: themeColor.background }}
-          data={group}
-          keyExtractor={item => item._id}
-          renderItem={({ item }) => (
-            <GroupChatListItem
-              user={item}
-              onPress={() => navigation.navigate('ChatHistory', { user: item })}
+          </>
+        );
+      case 'group':
+        return (
+          <>
+            <FlatList
+              style={{ backgroundColor: themeColor.background }}
+              data={group}
+              keyExtractor={item => item._id}
+              renderItem={({ item }) => (
+                <GroupChatListItem
+                  user={item}
+                  onPress={() =>
+                    navigation.navigate('ChatHistory', { user: item })
+                  }
+                />
+              )}
             />
-          )}
-        />
-      </>
-      case "group": return <>{}</>
+          </>
+        );
+      case 'group':
+        return <>{}</>;
     }
-  }
+  };
 
   return (
     <>
-        <CustomHeader title='Home'/>
+      <CustomHeader title="Home" />
 
       {isLoading && users.length == 0 && (
         <>
@@ -134,13 +143,13 @@ export const HomeUI: React.FC<Props> = ({ navigation }) => {
       )}
 
       {!isLoading && users.length > 0 && (
-      <>
-    <ChatTypeComp/>
-       
-           <View
+        <>
+          <ChatTypeComp />
+
+          <View
             style={{
-              bottom:10,
-              position:'absolute',
+              bottom: 20,
+              position: 'absolute',
               width: 300,
               height: 50,
               backgroundColor: themeColor.navbar,
@@ -153,31 +162,53 @@ export const HomeUI: React.FC<Props> = ({ navigation }) => {
             }}
           >
             {/* Chat 1 */}
-            <TouchableOpacity onPress={() => setChatType(()=> 'chat')}>
-            <Text style={{ color: themeColor.navbarTextColor }}>Chat</Text>
+            <TouchableOpacity onPress={() => setChatType(() => 'chat')}>
+              <Text style={{ color: themeColor.navbarTextColor }}>Chat</Text>
             </TouchableOpacity>
 
             {/* Divider */}
-            <View style={{ width: 1, height: '60%', backgroundColor: themeColor.navbarTextColor }} />
+            <View
+              style={{
+                width: 1,
+                height: '60%',
+                backgroundColor: themeColor.navbarTextColor,
+              }}
+            />
 
             {/* Chat 2 */}
-            <TouchableOpacity onPress={() => setChatType(()=> 'group')}>
-            <Text style={{ color: themeColor.navbarTextColor }}>Group</Text>
+            <TouchableOpacity onPress={() => setChatType(() => 'group')}>
+              <Text style={{ color: themeColor.navbarTextColor }}>Group</Text>
             </TouchableOpacity>
 
             {/* Divider */}
-            <View style={{ width: 1, height: '60%', backgroundColor: themeColor.navbarTextColor }} />
+            <View
+              style={{
+                width: 1,
+                height: '60%',
+                backgroundColor: themeColor.navbarTextColor,
+              }}
+            />
 
             {/* Group */}
-            <TouchableOpacity onPress={() => {
-              navigation.navigate('AddGroupUI', { users : users})
-            }}>
-            <Text style={{ color: themeColor.navbarTextColor }}>Group +</Text>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate('AddGroupUI', { users: users });
+              }}
+            >
+              <Text style={{ color: themeColor.navbarTextColor }}>Group +</Text>
+            </TouchableOpacity>
+            {/* call */}
+            {/* Group */}
+            <TouchableOpacity
+              onPress={() => {
+                
+              }}
+            >
+              <Text style={{ color: themeColor.navbarTextColor }}>Video</Text>
             </TouchableOpacity>
           </View>
-      </>
+        </>
       )}
-      
     </>
   );
 };

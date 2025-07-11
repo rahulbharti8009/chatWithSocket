@@ -36,6 +36,15 @@ const CustomHeader = ({ title }: {title: string}) => {
       >
         {title}
       </Text>
+       {/* Call and Video Call buttons */}
+      <View style={{ flexDirection: 'row' }}>
+        <TouchableOpacity onPress={() => console.log("Voice call")} style={{ marginHorizontal: 8 }}>
+          <Icon name="call-outline" size={22} color={themeColor.text} />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => console.log("Video call")}>
+          <Icon name="videocam-outline" size={22} color={themeColor.text} />
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };

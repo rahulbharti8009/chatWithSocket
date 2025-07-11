@@ -27,9 +27,9 @@ type Props = {
 };
 
 export const LoginUI: React.FC<Props> = ({ navigation }) => {
-  const [mobile, setMobile] = useState('0000000000');
+  const [mobile, setMobile] = useState('8171800266');
   const [isLoading, setLoading] = useState(false);
-  const [name, setName] = useState('test');
+  const [name, setName] = useState('Rahul');
 
   const [otp, setOtp] = useState('1234');
   const { theme, toggleTheme, themeColor } = useTheme();

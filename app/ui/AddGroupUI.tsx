@@ -61,24 +61,6 @@ const AddGroupUI = () => {
     };
     const socket = MySocket.getInstance().getSocket()
     socket?.emit("addgroup", data)
-    // let config = {
-    //   method: 'post',
-    //   maxBodyLength: Infinity,
-    //   url: `${BASE_URL}api/addchatgroups`,
-    //   headers: { 
-    //     'Content-Type': 'application/json'
-    //   },
-    //   data : data
-    // };
-    
-    // axios.request(config)
-    // .then((response) => {
-    //   Alert.alert(JSON.stringify(response.data));
-      
-    // })
-    // .catch((error) => {
-    //   console.log(error);
-    // });
   };
 
   const handleCreateGroup = async() => {
