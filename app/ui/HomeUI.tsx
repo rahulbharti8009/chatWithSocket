@@ -118,6 +118,7 @@ export const HomeUI: React.FC<Props> = ({ navigation }) => {
         );
       case 'group':
         return <>{}</>;
+        default: return null
     }
   };
 

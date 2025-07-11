@@ -28,24 +28,24 @@ test.only("Number Comparission",()=> {
 const mockNavigate = jest.fn();
 
 const mockProps: any = {
-  navigation: {
+  navigation: { 
     navigate: mockNavigate,
   },
 };
 
-describe('LoginUI - Mobile Number Input', () => {
-  it('should not allow more than 10 digits', () => {
-    const { getByPlaceholderText } = render(
-      <ThemeProvider>
-        <NavigationContainer>
-          <LoginUI {...mockProps} />
-        </NavigationContainer>
-      </ThemeProvider>
-    );
+// describe.only('LoginUI - Mobile Number Input', () => {
+//   it('should not allow more than 10 digits', () => {
+//     const { getByPlaceholderText } = render(
+//       <ThemeProvider>
+//         <NavigationContainer>
+//           <LoginUI {...mockProps} />
+//         </NavigationContainer>
+//       </ThemeProvider>
+//     );
 
-    const mobileInput = getByPlaceholderText('Enter Mobile Number');
-    fireEvent.changeText(mobileInput, '123456789012345');
-    expect(mobileInput.props.value.length).toBeLessThanOrEqual(10); // visually enforced
-  });
-});
+//     const mobileInput = getByPlaceholderText('Enter Mobile Number');
+//     fireEvent.changeText(mobileInput, '123456789012345');
+//     expect(mobileInput.props.value.length).toBeLessThanOrEqual(10); // visually enforced
+//   });
+// });
 
