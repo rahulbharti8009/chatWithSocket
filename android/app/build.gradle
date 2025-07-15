@@ -116,4 +116,9 @@ dependencies {
     } else {
         implementation jscFlavor
     }
+
+      debugImplementation 'com.facebook.flipper:flipper:0.273.0'
+      debugImplementation 'com.facebook.soloader:soloader:0.10.5'
+
+      releaseImplementation 'com.facebook.flipper:flipper-noop:0.273.0'
 }

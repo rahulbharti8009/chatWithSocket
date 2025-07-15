@@ -66,7 +66,7 @@ export const HomeUI: React.FC<Props> = ({ navigation }) => {
         socket.on(`group${mobile}`, handleGroup);
         return () => {
           socket.off(socketParams, handleUsers);
-          socket.off('group${mobile}', handleGroup);
+          socket.off(`group${mobile}`, handleGroup);
 
           // socket.removeAllListeners();
           socket.disconnect(); // 👈 disconnect cleanly

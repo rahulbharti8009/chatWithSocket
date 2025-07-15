@@ -1,7 +1,7 @@
 // components/CustomHeader.js
 
 import React from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 import { useTheme } from '../theme/ThemeContext';
@@ -24,7 +24,10 @@ const CustomHeader = ({ title }: {title: string}) => {
       }}
     >
       <TouchableOpacity onPress={() => navigation.goBack()}>
-        <Icon name="arrow-back" size={24} color={themeColor.text} />
+      <Image
+        source={require('../assets/back.png')}
+        style={{ width: 30, height: 30 , padding: 0,backgroundColor: themeColor.background ? '#000' : '#000', tintColor: theme ? '#ffffff': '#000000'}} // adjust size as needed
+      />
       </TouchableOpacity>
       <Text
         style={{
@@ -38,12 +41,12 @@ const CustomHeader = ({ title }: {title: string}) => {
       </Text>
        {/* Call and Video Call buttons */}
       <View style={{ flexDirection: 'row' }}>
-        <TouchableOpacity onPress={() => console.log("Voice call")} style={{ marginHorizontal: 8 }}>
+        {/* <TouchableOpacity onPress={() => console.log("Voice call")} style={{ marginHorizontal: 8 }}>
           <Icon name="call-outline" size={22} color={themeColor.text} />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => console.log("Video call")}>
           <Icon name="videocam-outline" size={22} color={themeColor.text} />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
     </View>
   );

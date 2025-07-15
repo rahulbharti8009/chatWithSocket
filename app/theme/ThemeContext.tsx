@@ -1,8 +1,6 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 import { useColorScheme } from 'react-native';
 
-type ThemeType = 'light' | 'dark';
-
 interface ThemeContextProps {
   theme: string;
   toggleTheme: () => void;
