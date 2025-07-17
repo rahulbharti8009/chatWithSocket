@@ -6,6 +6,7 @@
  */
 
 import {
+  Alert,
   SafeAreaView,
   StatusBar,
   StyleSheet,
@@ -14,15 +15,22 @@ import {
 } from 'react-native';
 import { MyStack } from './app/navigation/stack';
 import { ThemeProvider, useTheme } from './app/theme/ThemeContext';
+import messaging from '@react-native-firebase/messaging';
+import { useEffect } from 'react';
 
 function App() {
   const isDarkMode = useColorScheme() === 'dark';
-  // const { theme, toggleTheme, themeColor } = useTheme();
+
 
   return (
-    <SafeAreaView style={[styles.container,{
-      paddingTop: StatusBar.currentHeight 
-    }] }>
+    <SafeAreaView
+      style={[
+        styles.container,
+        {
+          paddingTop: StatusBar.currentHeight,
+        },
+      ]}
+    >
       <StatusBar
         hidden={false}
         barStyle="light-content" // or "dark-content"

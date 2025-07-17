@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "163168958694",
+    "project_id": "rbchat-cc2fb",
+    "storage_bucket": "rbchat-cc2fb.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:163168958694:android:6678f4659489dbcb5ce327",
+        "android_client_info": {
+          "package_name": "com.chatwithsocket"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCATmwPe9WEkAU1rgLeqemVQX1-fhcOWqE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
