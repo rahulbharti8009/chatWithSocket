@@ -28,6 +28,7 @@ export const HomeUI: React.FC<Props> = ({ navigation }) => {
   // const {mobile} = route.params
   const [users, setUsers] = useState<ChatUser[]>([]);
   const [group, setGroup] = useState<ChatUser[]>([]);
+  const [title, setTitle] = useState<string>('Home');
 
   const [isLoading, setlaoding] = useState(true);
   const [chatType, setChatType] = useState('chat');
@@ -124,7 +125,7 @@ export const HomeUI: React.FC<Props> = ({ navigation }) => {
 
   return (
     <>
-      <CustomHeader title="Home" />
+      <CustomHeader title={chatType} />
 
       {isLoading && users.length == 0 && (
         <>

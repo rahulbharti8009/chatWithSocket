@@ -40,10 +40,10 @@ export const ChatListItem: React.FC<{ user: ChatUser ,  onPress: () => void }> =
 const styles = StyleSheet.create({
   container: {
     borderColor: '#ccc',
-    borderWidth: 1,
+    borderWidth: 0,
     borderRadius: 10,
     padding: 10,
-    marginVertical: 6,
+    marginVertical: 0,
     marginHorizontal: 12,
     flexDirection: 'row',
     alignItems: 'center',

@@ -21,7 +21,7 @@ function App() {
 
   return (
     <SafeAreaView style={[styles.container,{
-      paddingTop: StatusBar.currentHeight 
+      paddingTop: StatusBar.currentHeight , backgroundColor: isDarkMode ? "#000000" : "#DD9C0FFF"
     }] }>
       <StatusBar
         hidden={false}

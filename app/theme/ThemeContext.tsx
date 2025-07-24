@@ -36,7 +36,7 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({
       inputBorder: theme === 'dark' ? '#444' : '#ccc',
       googleButtonBorder: theme === 'dark' ? '#555' : '#ccc',
       googleButtonText: theme === 'dark' ? '#eee' : '#444',
-      navbar: theme === 'dark' ? '#eee' : '#444',
+      navbar: theme === 'dark' ? '#eee' : '#DD9C0FFF',
       navbarTextColor: theme === 'dark' ? '#000000' : '#ffffff',
       button_bg_color: theme === 'dark' ? '#00695C' : '#00695C',
       button_text_color: theme === 'dark' ? '#ffffff' : '#ffffff',

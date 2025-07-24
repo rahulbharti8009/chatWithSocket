@@ -14,40 +14,52 @@ const CustomHeader = ({ title }: {title: string}) => {
   return (
     <View
       style={{
-        height: 50,
+        height: 56,
         flexDirection: 'row',
         alignItems: 'center',
+        justifyContent: 'space-between',
         paddingHorizontal: 16,
         backgroundColor: themeColor.background,
         borderBottomWidth: 1,
-        borderBottomColor: themeColor.background,
+        borderBottomColor: themeColor.text + '30', // slight border tint
       }}
     >
-      <TouchableOpacity onPress={() => navigation.goBack()}>
-      <Image
-        source={require('../assets/back.png')}
-        style={{ width: 30, height: 30 , padding: 0,backgroundColor: themeColor.background ? '#000' : '#000', tintColor: theme ? '#ffffff': '#000000'}} // adjust size as needed
-      />
-      </TouchableOpacity>
-      <Text
-        style={{
-          color: themeColor.text,
-          fontSize: 18,
-          fontWeight: 'bold',
-          marginLeft: 16,
-        }}
-      >
-        {title}
-      </Text>
-       {/* Call and Video Call buttons */}
-      <View style={{ flexDirection: 'row' }}>
-        {/* <TouchableOpacity onPress={() => console.log("Voice call")} style={{ marginHorizontal: 8 }}>
+      {/* Back Button + Title */}
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Image
+            source={require('../assets/back.png')}
+            style={{
+              width: 24,
+              height: 24,
+              tintColor: themeColor.text,
+              marginRight: 12,
+            }}
+          />
+        </TouchableOpacity>
+        <Text
+          style={{
+            color: themeColor.text,
+            fontSize: 18,
+            fontWeight: 'bold',
+          }}
+        >
+          {`${title.substring(0,1).toUpperCase()}${title.substring(1,title.length)}`}
+        </Text>
+      </View>
+
+      {/* Call & Video Icons */}
+      {/* <View style={{ flexDirection: 'row' }}>
+        <TouchableOpacity
+          onPress={() => console.log('Voice call')}
+          style={{ marginHorizontal: 8 }}
+        >
           <Icon name="call-outline" size={22} color={themeColor.text} />
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => console.log("Video call")}>
+        <TouchableOpacity onPress={() => console.log('Video call')}>
           <Icon name="videocam-outline" size={22} color={themeColor.text} />
-        </TouchableOpacity> */}
-      </View>
+        </TouchableOpacity>
+      </View> */}
     </View>
   );
 };
