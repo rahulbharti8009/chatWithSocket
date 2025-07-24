@@ -5,27 +5,16 @@
 import { AppRegistry } from 'react-native';
 import App from './App';
 import { name as appName } from './app.json';
+import { getMessaging } from '@react-native-firebase/messaging';
+import messaging from '@react-native-firebase/messaging';
 
-// // Import the functions you need from the SDKs you need
-// import { initializeApp } from "firebase/app";
-// import { getAnalytics } from "firebase/analytics";
-// // TODO: Add SDKs for Firebase products that you want to use
-// // https://firebase.google.com/docs/web/setup#available-libraries
 
-// // Your web app's Firebase configuration
-// // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-// const firebaseConfig = {
-//   apiKey: "AIzaSyDaVWxMzqRYjxLzoQv4ksuS4DBsqHUaufs",
-//   authDomain: "rbchat-cc2fb.firebaseapp.com",
-//   projectId: "rbchat-cc2fb",
-//   storageBucket: "rbchat-cc2fb.firebasestorage.app",
-//   messagingSenderId: "163168958694",
-//   appId: "1:163168958694:web:681232b43699b5615ce327",
-//   measurementId: "G-YERKWSZ07M"
-// };
+messaging().onMessage(async remoteMessage => {
+  Alert.alert('New FCM Message', JSON.stringify(remoteMessage.notification));
+});
 
-// // Initialize Firebase
-// const app = initializeApp(firebaseConfig);
-// const analytics = getAnalytics(app);
+messaging().setBackgroundMessageHandler(async remoteMessage => {
+  console.log('Message handled in the background!', remoteMessage);
+});
 
 AppRegistry.registerComponent(appName, () => App);

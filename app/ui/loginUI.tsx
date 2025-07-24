@@ -38,6 +38,7 @@ export const LoginUI: React.FC<Props> = ({ navigation }) => {
     const getToken = async () => {
       const token = await getMessaging().getToken();
       // Alert.alert('FCM Token:', token);
+      console.log(token)
       setName(token)
     };
     useEffect(() => {
