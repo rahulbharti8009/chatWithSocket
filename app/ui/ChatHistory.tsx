@@ -35,6 +35,15 @@ const ChatHistoryUI = () => {
   const { theme, toggleTheme, themeColor } = useTheme();
   const [online, setOnline] = useState<string>('');
 
+  useFocusEffect(
+    useCallback(() => {
+      console.log('Component B is focused again');
+      return () => {
+        console.log('Component B lost focus');
+      };
+    }, [])
+  );
+
   useEffect(() => {
  
     const socketParams = `message${ user.mobile ==  undefined ? `${user?.name.toString()}-${user?.name.toString()}`: `${DB.mobile}-${user.mobile.toString()}`}`;
