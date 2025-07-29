@@ -17,12 +17,29 @@ import {
 import { MyStack } from './app/navigation/stack';
 import { ThemeProvider, useTheme } from './app/theme/ThemeContext';
 import { useEffect } from 'react';
+import firebase from '@react-native-firebase/app';
+
 import messaging from '@react-native-firebase/messaging';
 import notifee, { AndroidImportance } from '@notifee/react-native';
 import MySocket from './app/utils/socket';
+
 function App() {
   const isDarkMode = useColorScheme() === 'dark';
   // const { theme, toggleTheme, themeColor } = useTheme();
+  const firebaseConfig = {
+    apiKey: "AIzaSyDaVWxMzqRYjxLzoQv4ksuS4DBsqHUaufs",
+    authDomain: "rbchat-cc2fb.firebaseapp.com",
+    projectId: "rbchat-cc2fb",
+    storageBucket: "rbchat-cc2fb.firebasestorage.app",
+    messagingSenderId: "163168958694",
+    appId: "1:163168958694:web:681232b43699b5615ce327",
+    measurementId: "G-YERKWSZ07M"
+  };
+  useEffect(() => {
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
+  }, []);
 
   async function onMessageReceived(message: any) {
     await notifee.displayNotification({
