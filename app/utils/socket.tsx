@@ -20,14 +20,15 @@ class MySocket {
     if (!DB.mobile) {
       throw new Error('DB.mobile is not set yet!');
     }
-
-    this.socket = io(BASE_URL, {
-      transports: ['websocket'],
-      autoConnect: false,
-      query: {
-        userId: DB.mobile,
-      },
-    });
+    if(this.socket == null){
+      this.socket = io(BASE_URL, {
+        transports: ['websocket'],
+        autoConnect: false,
+        query: {
+          userId: DB.mobile,
+        },
+      });
+    }
 
     return this.socket;
   }

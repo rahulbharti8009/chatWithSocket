@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -21,6 +21,7 @@ import DB from '../db/DBEntity';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NoInternetAlert } from '../common/no-internet';
 import { useTheme } from '../theme/ThemeContext';
+import messaging from '@react-native-firebase/messaging';
 
 type Props = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'Login'>;
@@ -33,7 +34,19 @@ export const LoginUI: React.FC<Props> = ({ navigation }) => {
 
   const [otp, setOtp] = useState('1234');
   const { theme, toggleTheme, themeColor } = useTheme();
+  const [fcmToken, setFcmToken] = useState('');
 
+
+    const getFcmToken = async () => {
+      const token = await messaging().getToken();
+      console.log('FCM Token:', token);
+      setFcmToken(()=> token)
+      return token;
+    };
+
+    useEffect(()=> {
+      getFcmToken();
+    })
 
   const handleLogin = async () => {
     const isConnected = await checkInternetConnection();
@@ -53,6 +66,7 @@ export const LoginUI: React.FC<Props> = ({ navigation }) => {
     const raw = JSON.stringify({
       mobile: mobile,
       name: name,
+      fcmToken: fcmToken
     });
 
     try {
@@ -134,7 +148,7 @@ export const LoginUI: React.FC<Props> = ({ navigation }) => {
                 styles.input,
                 { color: themeColor.text, backgroundColor: themeColor.background },
               ]}
-              maxLength={10}
+              // maxLength={10}
             />
           </>
         )}

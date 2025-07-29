@@ -4,34 +4,34 @@ import { LoginUI } from '../app/ui/loginUI';
 import { ThemeProvider, useTheme } from '../app/theme/ThemeContext';
 import { NavigationContainer } from '@react-navigation/native';
 
-test("2 and 5 multiply 10",()=> {
-  expect(10).toBe(10)
-})
+// test("2 and 5 multiply 10",()=> {
+//   expect(10).toBe(10)
+// })
 
-test("Null Value",()=> {
-  const value = 12;
-  expect(value).not.toBe(10)
-  expect(false).toBeFalsy()
-  expect(true).toBeTruthy()
-})
-
-
-test.only("Number Comparission",()=> {
- const value = 12;
-  expect(value).toBeGreaterThan(10)
-  expect(value).toBeGreaterThanOrEqual(12)
-  expect(value).toBeLessThan(20)
-  expect(value).toBeLessThanOrEqual(12)
-})
+// test("Null Value",()=> {
+//   const value = 12;
+//   expect(value).not.toBe(10)
+//   expect(false).toBeFalsy()
+//   expect(true).toBeTruthy()
+// })
 
 
-const mockNavigate = jest.fn();
+// test.only("Number Comparission",()=> {
+//  const value = 12;
+//   expect(value).toBeGreaterThan(10)
+//   expect(value).toBeGreaterThanOrEqual(12)
+//   expect(value).toBeLessThan(20)
+//   expect(value).toBeLessThanOrEqual(12)
+// })
 
-const mockProps: any = {
-  navigation: { 
-    navigate: mockNavigate,
-  },
-};
+
+// const mockNavigate = jest.fn();
+
+// const mockProps: any = {
+//   navigation: { 
+//     navigate: mockNavigate,
+//   },
+// };
 
 // describe.only('LoginUI - Mobile Number Input', () => {
 //   it('should not allow more than 10 digits', () => {

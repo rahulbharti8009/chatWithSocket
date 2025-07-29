@@ -1,5 +1,5 @@
-import { RouteProp, useNavigation } from '@react-navigation/native';
-import React, { useEffect, useState } from 'react';
+import { RouteProp, useFocusEffect, useNavigation } from '@react-navigation/native';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   ActivityIndicator,
   Alert,
@@ -25,6 +25,7 @@ type Props = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'Home'>;
 };
 export const HomeUI: React.FC<Props> = ({ navigation }) => {
+
   // const {mobile} = route.params
   const [users, setUsers] = useState<ChatUser[]>([]);
   const [group, setGroup] = useState<ChatUser[]>([]);
@@ -35,6 +36,15 @@ export const HomeUI: React.FC<Props> = ({ navigation }) => {
 
   const { theme, toggleTheme, themeColor } = useTheme();
 
+  useFocusEffect(
+    useCallback(() => {
+      console.log('Component A is focused again');
+      return () => {
+        console.log('Component A lost focus');
+      };
+    }, [])
+  );
+
   useEffect(() => {
     const saveMobile = async () => {
       try {
@@ -44,7 +54,6 @@ export const HomeUI: React.FC<Props> = ({ navigation }) => {
         const socketParams = 'users';
         const mySocket = MySocket.getInstance();
         const socket = mySocket.createSocket();
-
         if (!socket.connected) socket.connect();
         socket.emit('getUsers');
         socket.emit('group', mobile);
@@ -68,7 +77,6 @@ export const HomeUI: React.FC<Props> = ({ navigation }) => {
         return () => {
           socket.off(socketParams, handleUsers);
           socket.off(`group${mobile}`, handleGroup);
-
           // socket.removeAllListeners();
           socket.disconnect(); // 👈 disconnect cleanly
         };

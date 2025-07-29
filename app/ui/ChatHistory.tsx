@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { ChatMessage, ChatUser } from '../utils/types';
 import {
   Alert,
@@ -13,11 +13,12 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
-import { RouteProp, useRoute } from '@react-navigation/native';
+import { RouteProp, useFocusEffect, useRoute } from '@react-navigation/native';
 import DB from '../db/DBEntity';
 import MySocket from '../utils/socket';
 import CustomHeader from '../components/CustomHeader';
 import { useTheme } from '../theme/ThemeContext';
+import CustomChattingHeader from '../components/CustomChattingHeader';
 
 type ChatHistoryRouteProp = RouteProp<
   { ChatHistory: { user: ChatUser } },
@@ -32,10 +33,11 @@ const ChatHistoryUI = () => {
   const [message, setMessage] = useState<string>('');
   const [chat, setChat] = useState<ChatMessage[]>([]);
   const { theme, toggleTheme, themeColor } = useTheme();
+  const [online, setOnline] = useState<string>('');
 
   useEffect(() => {
+ 
     const socketParams = `message${ user.mobile ==  undefined ? `${user?.name.toString()}-${user?.name.toString()}`: `${DB.mobile}-${user.mobile.toString()}`}`;
-
     socket?.on(socketParams, (msg: ChatMessage) => {
       console.log('useEffect socket ', msg);
       setChat(prev => [...prev, msg]);
@@ -45,6 +47,8 @@ const ChatHistoryUI = () => {
       socket?.off(socketParams);
     };
   }, [user.mobile]);
+
+
 
   const sendMessage = () => {
     if (!DB.mobile || !message.trim()) return;
@@ -61,10 +65,11 @@ const ChatHistoryUI = () => {
     const body: ChatMessage = {
       message: message.trim(),
       from: DB.mobile.toString(),
-      clientFrom: user.mobile ==  undefined ? `${user?.name.toString()}`: DB.mobile.toString(),
-      clientTo: user.mobile ==  undefined ? `${user?.name.toString()}`: user.mobile.toString(),
+      clientFrom: user.mobile == undefined ? `${user?.name.toString()}` : DB.mobile.toString(),
+      clientTo: user.mobile == undefined ? `${user?.name.toString()}` : user.mobile.toString(),
       date: date,
       time: time,
+      fcmToken: user.fcmToken
     };
 
     socket?.emit('user-message', body);
@@ -73,8 +78,8 @@ const ChatHistoryUI = () => {
 
   return (
     <>
-      <CustomHeader
-        title={`${user.name == null ? user.name : user.name}`}
+      <CustomChattingHeader
+        title={`${user.name == null ? user.name : user.name}`} online={""}
       />
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'} // adjust for platform
@@ -83,9 +88,16 @@ const ChatHistoryUI = () => {
       >
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View style={{ flex: 1, padding: 10, backgroundColor: themeColor.background }}>
-            <FlatList
+          <FlatList
               data={chat}
               keyExtractor={(_, index) => index.toString()}
+              ListEmptyComponent={
+                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', marginTop: 20 }}>
+                  <Text style={{ color: themeColor.text, fontSize: 16 }}>
+                    No chats available
+                  </Text>
+                </View>
+              }
               renderItem={({ item, index }) => (
                 <>
                   {(index === 0 || item.date !== chat[index - 1]?.date) && (
@@ -132,6 +144,7 @@ const ChatHistoryUI = () => {
             />
             <View
               style={{
+                bottom: 0,
                 flexDirection: 'row',
                 alignItems: 'center',
                 borderColor: 'gray',

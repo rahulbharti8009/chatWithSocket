@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 import { useTheme } from '../theme/ThemeContext';
 
-const CustomHeader = ({ title,   }: {title: string,}) => {
+const CustomChattingHeader = ({ title, online  }: {title: string,online: string}) => {
     const { theme, toggleTheme, themeColor } = useTheme();
   
   const navigation = useNavigation();
@@ -64,4 +64,4 @@ const CustomHeader = ({ title,   }: {title: string,}) => {
   );
 };
 
-export default CustomHeader;
+export default CustomChattingHeader;

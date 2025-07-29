@@ -15,6 +15,7 @@ export type RootStackParamList = {
     online ?: boolean;
     admin: string;
     group_user: GroupUser[];
+    fcmToken : string;
     __v: number;
   };
 
@@ -31,5 +32,6 @@ export interface ChatMessage {
   clientTo: string;
   date: string;
   time: string;
+  fcmToken: string;
 }
   
